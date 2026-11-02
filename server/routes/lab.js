@@ -230,7 +230,8 @@ labRouter.get('/audit', (req, res) => {
 });
 
 labRouter.post('/audit/run', requireLocalControls, async (req, res) => {
-  const results = await runLiveAudit();
+  // Probe this very server (its own loopback port), not a fixed default port.
+  const results = await runLiveAudit(`http://127.0.0.1:${req.socket.localPort}`);
   logEvent(req, { action: 'AUDIT_RUN', result: 'success', securityEvent: 'AUDIT_RUN', details: { failed: Object.values(results).filter((r) => r.pass === false).length, mode: getMode() } });
   res.json({ mode: getMode(), ranAt: new Date().toISOString(), results });
 });

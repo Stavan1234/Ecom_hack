@@ -143,7 +143,10 @@ export function rotateSession(req, res) {
 
 export function ownOrigins(req) {
   if (PUBLIC_DEMO) return [`https://${req.headers.host}`];
-  return [`http://127.0.0.1:${APP_PORT}`, `http://localhost:${APP_PORT}`];
+  // Derive the app's own port from the request host, so this is correct on any
+  // port (custom LAB_PORT, or an ephemeral test port), not just the default.
+  const port = String(req.headers.host || '').split(':')[1] || String(APP_PORT);
+  return [`http://127.0.0.1:${port}`, `http://localhost:${port}`];
 }
 
 export function isForeignOrigin(req) {

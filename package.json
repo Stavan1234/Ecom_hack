@@ -5,13 +5,13 @@
   "type": "module",
   "description": "Halden & Voss luxury storefront with an integrated web security training laboratory (local, intentionally vulnerable).",
   "engines": {
-    "node": ">=22.13"
+    "node": "24.x"
   },
   "scripts": {
     "start": "node --disable-warning=ExperimentalWarning scripts/start.js",
     "build": "vite build",
     "reset": "node --disable-warning=ExperimentalWarning scripts/reset.js",
-    "test": "node --disable-warning=ExperimentalWarning --test tests/",
+    "test": "node --disable-warning=ExperimentalWarning --test \"tests/**/*.test.js\"",
     "docs": "node scripts/gen-docs.js"
   },
   "dependencies": {
