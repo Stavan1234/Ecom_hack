@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spin to win! (clickjacking lab)</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<div class="ribbon">Lab 3 attack page. Origin: <code id="me"></code>. The hidden action only sets a harmless mailing preference on your training account.</div>
+<main>
+  <h1>Claim your free watch winder</h1>
+  <p>Only one click needed. No sign-up, no catch. Honest.</p>
+
+  <div class="stage" id="stage">
+    <h3>You are a winner!</h3>
+    <p>Press the button below to reserve your prize before the timer runs out.</p>
+    <button class="decoy" type="button">CLAIM MY FREE PRIZE</button>
+    <iframe id="frame" title="Framed shop page"></iframe>
+  </div>
+
+  <div class="card plain">
+    <h2 style="margin-top:0">Reveal the attack</h2>
+    <div class="controls">
+      <label for="opacity">Frame opacity: <b id="opacityValue">0%</b></label>
+      <input type="range" id="opacity" min="0" max="100" value="0">
+      <button type="button" class="alt" id="half">Show at 50%</button>
+      <button type="button" class="alt" id="hide">Hide again</button>
+    </div>
+    <p class="note">At 0% the frame is invisible but still receives the click. Raise the slider to see the real button sitting exactly over the decoy. Then, in DevTools → Elements, find the <code>&lt;iframe id="frame"&gt;</code> and its <code>opacity</code>, <code>position</code> and <code>z-index</code>.</p>
+    <p class="note"><b>Secure mode:</b> the frame stays empty because the browser refuses to render the page. DevTools → Console reports the <code>X-Frame-Options</code> or <code>frame-ancestors</code> refusal, and a click only hits the harmless decoy.</p>
+  </div>
+</main>
+<script src="/config.js"></script>
+<script>
+  document.getElementById('me').textContent = location.origin;
+  var frame = document.getElementById('frame');
+  frame.src = window.TARGET + '/vip-invitation';
+  var slider = document.getElementById('opacity');
+  function apply(v) { slider.value = v; frame.style.opacity = v / 100; document.getElementById('opacityValue').textContent = v + '%'; }
+  slider.addEventListener('input', function () { apply(slider.value); });
+  document.getElementById('half').addEventListener('click', function () { apply(50); });
+  document.getElementById('hide').addEventListener('click', function () { apply(0); });
+  document.querySelector('.decoy').addEventListener('click', function () { alert('This decoy button did nothing. In secure mode, this is the only button you can reach.'); });
+</script>
+</body></html>

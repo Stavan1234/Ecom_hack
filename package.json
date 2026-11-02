@@ -1,0 +1,27 @@
+{
+  "name": "halden-voss-security-lab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Halden & Voss luxury storefront with an integrated web security training laboratory (local, intentionally vulnerable).",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning scripts/start.js",
+    "build": "vite build",
+    "reset": "node --disable-warning=ExperimentalWarning scripts/reset.js",
+    "test": "node --disable-warning=ExperimentalWarning --test tests/",
+    "docs": "node scripts/gen-docs.js"
+  },
+  "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/manrope": "^5.3.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "express": "^5.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.6",
+    "vite": "^6.4.5"
+  }
+}

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attacker demo site (local lab)</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<div class="ribbon">Lab attacker page. Local, harmless, and only aimed at your own 127.0.0.1 training app.</div>
+<main>
+  <h1>Attacker demo site</h1>
+  <p>This server is a different <b>origin</b> from the shop. The pages here model what a hostile website could do to a signed-in shopper.</p>
+
+  <div class="card plain">
+    <h2 style="margin-top:0">Where are you loading this from?</h2>
+    <table>
+      <tr><th>This page's origin</th><td><code id="me"></code></td></tr>
+      <tr><th>Shop origin</th><td><code id="target"></code></td></tr>
+      <tr><th>Same origin?</th><td>No, the port differs</td></tr>
+      <tr><th>Same site?</th><td id="site"></td></tr>
+    </table>
+    <p class="note"><b>Same-site</b> ignores ports, so <code>127.0.0.1:4001</code> and <code>127.0.0.1:4000</code> are the same site, and SameSite cookies are still sent. <code>localhost:4001</code> is a different site from <code>127.0.0.1:4000</code>, so it exercises the SameSite rules.</p>
+    <p><a class="btn alt" id="same" href="#">Open as same-site (127.0.0.1)</a> <a class="btn alt" id="cross" href="#">Open as cross-site (localhost)</a></p>
+  </div>
+
+  <div class="card"><h2 style="margin-top:0">Lab 2: CSRF</h2><p>A prize page that quietly changes your display name on the shop.</p><a class="btn" href="/csrf">Open CSRF page</a></div>
+  <div class="card"><h2 style="margin-top:0">Lab 3: Clickjacking</h2><p>A decoy button with the real shop page in an invisible frame on top.</p><a class="btn" href="/clickjack">Open clickjacking page</a></div>
+</main>
+<script src="/config.js"></script>
+<script>
+  var port = location.port;
+  document.getElementById('me').textContent = location.origin;
+  document.getElementById('target').textContent = window.TARGET;
+  document.getElementById('site').textContent = location.hostname === new URL(window.TARGET).hostname
+    ? 'Yes, same host (SameSite does not apply here)' : 'No, different host (SameSite applies)';
+  document.getElementById('same').href = 'http://127.0.0.1:' + port + '/';
+  document.getElementById('cross').href = 'http://localhost:' + port + '/';
+</script>
+</body></html>

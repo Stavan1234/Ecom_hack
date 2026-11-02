@@ -1,0 +1,15 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Georgia, 'Times New Roman', serif; background: #f6f1e6; color: #1b1814; }
+header { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; background: #14120f; color: #e9e1cf; }
+header a { color: #e9e1cf; text-decoration: none; font-size: 20px; }
+header span { font-family: Arial, sans-serif; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #c6a15b; }
+main { max-width: 760px; margin: 0 auto; padding: 40px 16px; }
+h1 { font-weight: 400; font-size: 36px; margin: 0 0 20px; }
+form { display: flex; gap: 8px; }
+input { flex: 1; min-width: 0; padding: 12px 14px; border: 1px solid #bcb29d; background: #fff; font: inherit; }
+button { padding: 12px 22px; background: #14120f; color: #f6f1e6; border: 0; font-family: Arial, sans-serif; cursor: pointer; }
+.summary { margin: 24px 0 12px; color: #4f483c; }
+ul { list-style: none; padding: 0; margin: 0; border-top: 1px solid #d8cfbc; }
+li { display: flex; flex-wrap: wrap; gap: 12px; padding: 14px 0; border-bottom: 1px solid #d8cfbc; align-items: baseline; }
+li a { color: #1b1814; font-size: 18px; }
+li span { color: #6d6556; font-size: 14px; flex: 1; }
