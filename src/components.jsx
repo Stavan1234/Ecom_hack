@@ -6,14 +6,8 @@ import { useApp } from './store.jsx';
 function LabStrip() {
   const { mode, publicDemo } = useApp();
   if (!mode) return null;
-  if (publicDemo) {
-    return (
-      <div className="lab-strip secure">
-        <span><b>Public preview.</b> A fictional shop running in secure mode only. Use fabricated details, never real ones.</span>
-        <Link to="/lab">About this project →</Link>
-      </div>
-    );
-  }
+  // On a public deployment the training strip is hidden; the storefront reads as an ordinary shop.
+  if (publicDemo) return null;
   return (
     <div className={`lab-strip ${mode}`}>
       <span>
@@ -100,6 +94,7 @@ function Newsletter() {
 }
 
 function Footer() {
+  const { publicDemo } = useApp();
   return (
     <footer className="site-footer">
       <div className="footer-grid">
@@ -114,7 +109,7 @@ function Footer() {
           <Link to="/shop/automobiles">Automobiles</Link>
           <Link to="/shop/accessories">Atelier accessories</Link>
           <Link to="/engraving">Engraving studio</Link>
-          <a href="/classic/search">Classic catalogue</a>
+          {!publicDemo && <a href="/classic/search">Classic catalogue</a>}
         </div>
         <div>
           <h4>The Maison</h4>
@@ -129,10 +124,10 @@ function Footer() {
           <Link to="/policies/shipping">Shipping</Link>
           <Link to="/policies/returns">Returns</Link>
           <Link to="/policies/privacy">Privacy</Link>
-          <Link to="/lab">Security Lab</Link>
+          {!publicDemo && <Link to="/lab">Security Lab</Link>}
         </div>
       </div>
-      <p className="footer-note">Halden &amp; Voss is a fictional brand created for a security training exercise. No product, person or order here is real, and nothing can be purchased.</p>
+      <p className="footer-note">Halden &amp; Voss is a fictional brand created for a demonstration. No product, person or order here is real, and nothing can be purchased.</p>
     </footer>
   );
 }

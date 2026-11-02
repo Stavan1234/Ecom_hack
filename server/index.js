@@ -4,14 +4,12 @@ import { createAttackerApp } from '../attacker/server.js';
 
 export function startServers({ appPort = APP_PORT, attackerPort = ATTACKER_PORT } = {}) {
   const app = createApp().listen(appPort, HOST, () => {
-    const { address, port } = app.address();
-    console.log(`\n  Halden & Voss storefront   http://${address}:${port}`);
-    console.log(`  Security Lab               http://${address}:${port}/lab`);
+    console.log(`\n  Halden & Voss storefront   http://${HOST}:${appPort}`);
+    console.log(`  Security Lab               http://${HOST}:${appPort}/lab`);
   });
   const attacker = createAttackerApp(appPort).listen(attackerPort, HOST, () => {
-    const { address, port } = attacker.address();
-    console.log(`  Attacker demo site         http://${address}:${port}  (same-site)`);
-    console.log(`                             http://localhost:${port}  (cross-site)`);
+    console.log(`  Attacker demo site         http://${HOST}:${attackerPort}  (same-site)`);
+    console.log(`                             http://localhost:${attackerPort}  (cross-site)`);
     console.log('\n  INTENTIONALLY VULNERABLE. Bound to loopback only. Press Ctrl+C to stop.\n');
   });
 
